@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resul Emin Arlı Oyun Dünyası</title>
+    <style>
+        /* Genel Stiller */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Stilleri */
+        header {
+            background: linear-gradient(135deg, #6e48aa, #9d50bb);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .slogan {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Navigasyon */
+        nav {
+            background-color: #333;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 25px;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: #6e48aa;
+        }
+
+        /* Oyunlar Bölümü */
+        .games-section {
+            padding: 50px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2rem;
+            color: #6e48aa;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .game-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .game-info {
+            padding: 20px;
+        }
+
+        .game-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .game-desc {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .play-btn {
+            display: inline-block;
+            background-color: #6e48aa;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .play-btn:hover {
+            background-color: #9d50bb;
+        }
+
+        /* Oyun Alanı */
+        .game-area {
+            display: none;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .game-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background-color: #333;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background-color: #555;
+        }
+
+        /* Snake Oyunu */
+        #snake-game {
+            position: relative;
+        }
+
+        #snake-canvas {
+            border: 2px solid #333;
+            background-color: #f0f0f0;
+            margin: 20px auto;
+        }
+
+        .snake-controls {
+            margin-top: 20px;
+        }
+
+        .snake-controls button {
+            background-color: #6e48aa;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .snake-controls button:hover {
+            background-color: #9d50bb;
+        }
+
+        .score-display {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        /* Hafıza Oyunu */
+        .memory-game {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .memory-card {
+            height: 100px;
+            background-color: #6e48aa;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .memory-card.flipped {
+            background-color: white;
+            color: #333;
+            transform: rotateY(180deg);
+        }
+
+        .memory-card.matched {
+            background-color: #4CAF50;
+            cursor: default;
+        }
+
+        /* Tetris Oyunu */
+        #tetris-canvas {
+            border: 2px solid #333;
+            background-color: #f0f0f0;
+            margin: 20px auto;
+        }
+
+        .tetris-controls {
+            margin-top: 20px;
+        }
+
+        .tetris-controls button {
+            background-color: #6e48aa;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .tetris-controls button:hover {
+            background-color: #9d50bb;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+
+        .footer-text {
+            margin-bottom: 10px;
+        }
+
+        .social-links {
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            margin: 0 10px;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #9d50bb;
+        }
+
+        /* Responsive Tasarım */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav ul li a {
+                padding: 10px;
+                text-align: center;
+            }
+
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .memory-game {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Animasyonlar */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Resul Emin Arlı Oyun Dünyası</div>
+            <div class="slogan">Eğlence ve heyecan bir tık uzağınızda!</div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#" class="nav-home">Ana Sayfa</a></li>
+            <li><a href="#" class="nav-snake">Yılan Oyunu</a></li>
+            <li><a href="#" class="nav-memory">Hafıza Oyunu</a></li>
+            <li><a href="#" class="nav-tetris">Tetris</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <!-- Oyun Listesi -->
+        <section class="games-section" id="home-section">
+            <h2 class="section-title">Popüler Oyunlar</h2>
+            <div class="games-grid">
+                <div class="game-card" data-game="snake">
+                    <img src="https://via.placeholder.com/300x200?text=Yılan+Oyunu" alt="Yılan Oyunu">
+                    <div class="game-info">
+                        <h3 class="game-title">Yılan Oyunu</h3>
+                        <p class="game-desc">Klasik yılan oyunu ile eğlenceli vakit geçirin. Yön tuşları ile yılanı kontrol edin ve puan toplayın.</p>
+                        <a href="#" class="play-btn snake-play">Oyna</a>
+                    </div>
+                </div>
+
+                <div class="game-card" data-game="memory">
+                    <img src="https://via.placeholder.com/300x200?text=Hafıza+Oyunu" alt="Hafıza Oyunu">
+                    <div class="game-info">
+                        <h3 class="game-title">Hafıza Oyunu</h3>
+                        <p class="game-desc">Hafızanızı test edin! Kartları eşleştirin ve en yüksek skoru elde etmeye çalışın.</p>
+                        <a href="#" class="play-btn memory-play">Oyna</a>
+                    </div>
+                </div>
+
+                <div class="game-card" data-game="tetris">
+                    <img src="https://via.placeholder.com/300x200?text=Tetris" alt="Tetris">
+                    <div class="game-info">
+                        <h3 class="game-title">Tetris</h3>
+                        <p class="game-desc">Klasik Tetris oyunu ile blokları düşürün ve satırları tamamlayarak puan kazanın.</p>
+                        <a href="#" class="play-btn tetris-play">Oyna</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Yılan Oyunu -->
+        <section class="game-area" id="snake-section">
+            <a href="#" class="back-btn">Geri Dön</a>
+            <div class="game-container">
+                <h2>Yılan Oyunu</h2>
+                <div class="score-display">Skor: <span id="snake-score">0</span></div>
+                <canvas id="snake-canvas" width="400" height="400"></canvas>
+                <div class="snake-controls">
+                    <button id="snake-start">Başlat</button>
+                    <button id="snake-pause">Durdur</button>
+                    <button id="snake-reset">Sıfırla</button>
+                </div>
+                <p>Yön tuşlarını kullanarak yılanı kontrol edebilirsiniz.</p>
+            </div>
+        </section>
+
+        <!-- Hafıza Oyunu -->
+        <section class="game-area" id="memory-section">
+            <a href="#" class="back-btn">Geri Dön</a>
+            <div class="game-container">
+                <h2>Hafıza Oyunu</h2>
+                <div class="score-display">Hamle: <span id="memory-moves">0</span></div>
+                <div class="memory-game" id="memory-game"></div>
+                <div style="margin-top: 20px;">
+                    <button id="memory-reset">Yeni Oyun</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tetris Oyunu -->
+        <section class="game-area" id="tetris-section">
+            <a href="#" class="back-btn">Geri Dön</a>
+            <div class="game-container">
+                <h2>Tetris</h2>
+                <div class="score-display">Skor: <span id="tetris-score">0</span></div>
+                <canvas id="tetris-canvas" width="300" height="600"></canvas>
+                <div class="tetris-controls">
+                    <button id="tetris-start">Başlat</button>
+                    <button id="tetris-pause">Durdur</button>
+                    <button id="tetris-reset">Sıfırla</button>
+                </div>
+                <p>Yön tuşlarını kullanarak blokları kontrol edebilirsiniz.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p class="footer-text">© 2023 Resul Emin Arlı Oyun Dünyası. Tüm hakları saklıdır.</p>
+            <p class="footer-text">Eğlence ve öğrenme bir arada!</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@RESULEM%C4%B0NARLI"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Font Awesome için (sosyal medya ikonları)
+        document.addEventListener('DOMContentLoaded', function() {
+            const fa = document.createElement('link');
+            fa.rel = 'stylesheet';
+            fa.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
+            document.head.appendChild(fa);
+        });
+
+        // Sayfa Geçişleri
+        document.addEventListener('DOMContentLoaded', function() {
+            const homeSection = document.getElementById('home-section');
+            const snakeSection = document.getElementById('snake-section');
+            const memorySection = document.getElementById('memory-section');
+            const tetrisSection = document.getElementById('tetris-section');
+
+            // Navigasyon bağlantıları
+            document.querySelector('.nav-home').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection(homeSection);
+            });
+
+            document.querySelector('.nav-snake').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection(snakeSection);
+                initSnakeGame();
+            });
+
+            document.querySelector('.nav-memory').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection(memorySection);
+                initMemoryGame();
+            });
+
+            document.querySelector('.nav-tetris').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection(tetrisSection);
+                initTetrisGame();
+            });
+
+            // Oyun kartlarındaki butonlar
+            document.querySelector('.snake-play').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection(snakeSection);
+                initSnakeGame();
+            });
+
+            document.querySelector('.memory-play').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection(memorySection);
+                initMemoryGame();
+            });
+
+            document.querySelector('.tetris-play').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection(tetrisSection);
+                initTetrisGame();
+            });
+
+            // Geri düğmeleri
+            document.querySelectorAll('.back-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showSection(homeSection);
+                });
+            });
+
+            function showSection(section) {
+                document.querySelectorAll('.game-area, #home-section').forEach(sec => {
+                    sec.style.display = 'none';
+                });
+                section.style.display = 'block';
+                section.classList.add('fade-in');
+            }
+
+            // Başlangıçta ana sayfayı göster
+            showSection(homeSection);
+        });
+
+        // Yılan Oyunu
+        function initSnakeGame() {
+            const canvas = document.getElementById('snake-canvas');
+            const ctx = canvas.getContext('2d');
+            const scoreDisplay = document.getElementById('snake-score');
+            const startBtn = document.getElementById('snake-start');
+            const pauseBtn = document.getElementById('snake-pause');
+            const resetBtn = document.getElementById('snake-reset');
+
+            const box = 20;
+            let snake = [{x: 9 * box, y: 10 * box}];
+            let direction = null;
+            let food = {
+                x: Math.floor(Math.random() * 20) * box,
+                y: Math.floor(Math.random() * 20) * box
+            };
+            let score = 0;
+            let game;
+            let gameRunning = false;
+
+            function drawGame() {
+                // Arka plan
+                ctx.fillStyle = '#f0f0f0';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Yılan
+                for (let i = 0; i < snake.length; i++) {
+                    ctx.fillStyle = i === 0 ? '#6e48aa' : '#9d50bb';
+                    ctx.fillRect(snake[i].x, snake[i].y, box, box);
+                    ctx.strokeStyle = '#fff';
+                    ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+                }
+
+                // Yem
+                ctx.fillStyle = '#4CAF50';
+                ctx.fillRect(food.x, food.y, box, box);
+
+                // Yılanın baş pozisyonu
+                let snakeX = snake[0].x;
+                let snakeY = snake[0].y;
+
+                // Yön kontrolü
+                if (direction === 'LEFT') snakeX -= box;
+                if (direction === 'UP') snakeY -= box;
+                if (direction === 'RIGHT') snakeX += box;
+                if (direction === 'DOWN') snakeY += box;
+
+                // Yem yeme
+                if (snakeX === food.x && snakeY === food.y) {
+                    score++;
+                    scoreDisplay.textContent = score;
+                    food = {
+                        x: Math.floor(Math.random() * 20) * box,
+                        y: Math.floor(Math.random() * 20) * box
+                    };
+                } else {
+                    snake.pop();
+                }
+
+                // Yeni baş
+                let newHead = {
+                    x: snakeX,
+                    y: snakeY
+                };
+
+                // Çarpışma kontrolü
+                if (
+                    snakeX < 0 ||
+                    snakeY < 0 ||
+                    snakeX >= canvas.width ||
+                    snakeY >= canvas.height ||
+                    collision(newHead, snake)
+                ) {
+                    clearInterval(game);
+                    gameRunning = false;
+                    alert('Oyun bitti! Skorunuz: ' + score);
+                    return;
+                }
+
+                snake.unshift(newHead);
+            }
+
+            function collision(head, array) {
+                for (let i = 0; i < array.length; i++) {
+                    if (head.x === array[i].x && head.y === array[i].y) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            function changeDirection(e) {
+                if (!gameRunning) return;
+                
+                if (e.keyCode === 37 && direction !== 'RIGHT') {
+                    direction = 'LEFT';
+                } else if (e.keyCode === 38 && direction !== 'DOWN') {
+                    direction = 'UP';
+                } else if (e.keyCode === 39 && direction !== 'LEFT') {
+                    direction = 'RIGHT';
+                } else if (e.keyCode === 40 && direction !== 'UP') {
+                    direction = 'DOWN';
+                }
+            }
+
+            function startGame() {
+                if (gameRunning) return;
+                gameRunning = true;
+                game = setInterval(drawGame, 100);
+            }
+
+            function pauseGame() {
+                if (!gameRunning) return;
+                clearInterval(game);
+                gameRunning = false;
+            }
+
+            function resetGame() {
+                pauseGame();
+                snake = [{x: 9 * box, y: 10 * box}];
+                direction = null;
+                food = {
+                    x: Math.floor(Math.random() * 20) * box,
+                    y: Math.floor(Math.random() * 20) * box
+                };
+                score = 0;
+                scoreDisplay.textContent = score;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Kontroller
+            document.addEventListener('keydown', changeDirection);
+            startBtn.addEventListener('click', startGame);
+            pauseBtn.addEventListener('click', pauseGame);
+            resetBtn.addEventListener('click', resetGame);
+        }
+
+        // Hafıza Oyunu
+        function initMemoryGame() {
+            const memoryGame = document.getElementById('memory-game');
+            const movesDisplay = document.getElementById('memory-moves');
+            const resetBtn = document.getElementById('memory-reset');
+
+            const emojis = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼'];
+            let cards = [...emojis, ...emojis];
+            let hasFlippedCard = false;
+            let lockBoard = false;
+            let firstCard, secondCard;
+            let moves = 0;
+            let matchedPairs = 0;
+
+            function shuffleCards() {
+                for (let i = cards.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [cards[i], cards[j]] = [cards[j], cards[i]];
+                }
+            }
+
+            function createBoard() {
+                memoryGame.innerHTML = '';
+                shuffleCards();
+                
+                cards.forEach((emoji, index) => {
+                    const card = document.createElement('div');
+                    card.classList.add('memory-card');
+                    card.dataset.emoji = emoji;
+                    card.dataset.index = index;
+                    card.addEventListener('click', flipCard);
+                    memoryGame.appendChild(card);
+                });
+            }
+
+            function flipCard() {
+                if (lockBoard) return;
+                if (this === firstCard) return;
+
+                this.classList.add('flipped');
+                this.textContent = this.dataset.emoji;
+
+                if (!hasFlippedCard) {
+                    hasFlippedCard = true;
+                    firstCard = this;
+                    return;
+                }
+
+                secondCard = this;
+                moves++;
+                movesDisplay.textContent = moves;
+                checkForMatch();
+            }
+
+            function checkForMatch() {
+                let isMatch = firstCard.dataset.emoji === secondCard.dataset.emoji;
+
+                if (isMatch) {
+                    disableCards();
+                    matchedPairs++;
+                    if (matchedPairs === emojis.length) {
+                        setTimeout(() => {
+                            alert(`Tebrikler! Oyunu ${moves} hamlede tamamladınız.`);
+                        }, 500);
+                    }
+                } else {
+                    unflipCards();
+                }
+            }
+
+            function disableCards() {
+                firstCard.removeEventListener('click', flipCard);
+                secondCard.removeEventListener('click', flipCard);
+                firstCard.classList.add('matched');
+                secondCard.classList.add('matched');
+                resetBoard();
+            }
+
+            function unflipCards() {
+                lockBoard = true;
+                setTimeout(() => {
+                    firstCard.classList.remove('flipped');
+                    secondCard.classList.remove('flipped');
+                    firstCard.textContent = '';
+                    secondCard.textContent = '';
+                    resetBoard();
+                }, 1000);
+            }
+
+            function resetBoard() {
+                [hasFlippedCard, lockBoard] = [false, false];
+                [firstCard, secondCard] = [null, null];
+            }
+
+            function resetGame() {
+                moves = 0;
+                matchedPairs = 0;
+                movesDisplay.textContent = moves;
+                createBoard();
+            }
+
+            // Oyunu başlat
+            resetBtn.addEventListener('click', resetGame);
+            resetGame();
+        }
+
+        // Tetris Oyunu
+        function initTetrisGame() {
+            const canvas = document.getElementById('tetris-canvas');
+            const ctx = canvas.getContext('2d');
+            const scoreDisplay = document.getElementById('tetris-score');
+            const startBtn = document.getElementById('tetris-start');
+            const pauseBtn = document.getElementById('tetris-pause');
+            const resetBtn = document.getElementById('tetris-reset');
+
+            const blockSize = 30;
+            const rows = 20;
+            const cols = 10;
+            let score = 0;
+            let gameRunning = false;
+            let game;
+            let board = createBoard();
+
+            // Tetris parçaları
+            const pieces = [
+                { shape: [[1, 1, 1, 1]], color: '#00FFFF' }, // I
+                { shape: [[1, 1, 1], [0, 1, 0]], color: '#800080' }, // T
+                { shape: [[1, 1, 1], [1, 0, 0]], color: '#FF7F00' }, // L
+                { shape: [[1, 1, 1], [0, 0, 1]], color: '#0000FF' }, // J
+                { shape: [[1, 1], [1, 1]], color: '#FFFF00' }, // O
+                { shape: [[0, 1, 1], [1, 1, 0]], color: '#00FF00' }, // S
+                { shape: [[1, 1, 0], [0, 1, 1]], color: '#FF0000' }  // Z
+            ];
+
+            let currentPiece = null;
+            let nextPiece = null;
+            let pieceX = 0;
+            let pieceY = 0;
+
+            function createBoard() {
+                return Array.from({length: rows}, () => Array(cols).fill(0));
+            }
+
+            function drawBoard() {
+                ctx.fillStyle = '#f0f0f0';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Çizgiler
+                ctx.strokeStyle = '#ddd';
+                for (let i = 0; i <= cols; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(i * blockSize, 0);
+                    ctx.lineTo(i * blockSize, rows * blockSize);
+                    ctx.stroke();
+                }
+                for (let i = 0; i <= rows; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, i * blockSize);
+                    ctx.lineTo(cols * blockSize, i * blockSize);
+                    ctx.stroke();
+                }
+
+                // Dolu bloklar
+                for (let y = 0; y < rows; y++) {
+                    for (let x = 0; x < cols; x++) {
+                        if (board[y][x]) {
+                            ctx.fillStyle = board[y][x];
+                            ctx.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
+                            ctx.strokeStyle = '#fff';
+                            ctx.strokeRect(x * blockSize, y * blockSize, blockSize, blockSize);
+                        }
+                    }
+                }
+            }
+
+            function drawPiece() {
+                if (!currentPiece) return;
+                
+                ctx.fillStyle = currentPiece.color;
+                for (let y = 0; y < currentPiece.shape.length; y++) {
+                    for (let x = 0; x < currentPiece.shape[y].length; x++) {
+                        if (currentPiece.shape[y][x]) {
+                            ctx.fillRect(
+                                (pieceX + x) * blockSize, 
+                                (pieceY + y) * blockSize, 
+                                blockSize, 
+                                blockSize
+                            );
+                            ctx.strokeStyle = '#fff';
+                            ctx.strokeRect(
+                                (pieceX + x) * blockSize, 
+                                (pieceY + y) * blockSize, 
+                                blockSize, 
+                                blockSize
+                            );
+                        }
+                    }
+                }
+            }
+
+            function newPiece() {
+                currentPiece = nextPiece || pieces[Math.floor(Math.random() * pieces.length)];
+                nextPiece = pieces[Math.floor(Math.random() * pieces.length)];
+                pieceX = Math.floor(cols / 2) - Math.floor(currentPiece.shape[0].length / 2);
+                pieceY = 0;
+
+                // Oyun bitti mi kontrolü
+                if (collision()) {
+                    gameOver();
+                }
+            }
+
+            function collision() {
+                for (let y = 0; y < currentPiece.shape.length; y++) {
+                    for (let x = 0; x < currentPiece.shape[y].length; x++) {
+                        if (
+                            currentPiece.shape[y][x] &&
+                            (board[y + pieceY] === undefined || 
+                             board[y + pieceY][x + pieceX] === undefined || 
+                             board[y + pieceY][x + pieceX])
+                        ) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            function lockPiece() {
+                for (let y = 0; y < currentPiece.shape.length; y++) {
+                    for (let x = 0; x < currentPiece.shape[y].length; x++) {
+                        if (currentPiece.shape[y][x]) {
+                            board[y + pieceY][x + pieceX] = currentPiece.color;
+                        }
+                    }
+                }
+
+                // Satır tamamlama kontrolü
+                clearLines();
+                newPiece();
+            }
+
+            function clearLines() {
+                let linesCleared = 0;
+                
+                outer: for (let y = rows - 1; y >= 0; y--) {
+                    for (let x = 0; x < cols; x++) {
+                        if (!board[y][x]) {
+                            continue outer;
+                        }
+                    }
+
+                    // Satırı sil
+                    board.splice(y, 1);
+                    // Yeni satır ekle
+                    board.unshift(Array(cols).fill(0));
+                    linesCleared++;
+                    y++; // Aynı satırı tekrar kontrol et
+                }
+
+                if (linesCleared > 0) {
+                    score += linesCleared * 100;
+                    scoreDisplay.textContent = score;
+                }
+            }
+
+            function movePiece(dx, dy) {
+                if (!gameRunning) return;
+                
+                pieceX += dx;
+                pieceY += dy;
+                
+                if (collision()) {
+                    pieceX -= dx;
+                    pieceY -= dy;
+                    
+                    if (dy === 1) {
+                        lockPiece();
+                    }
+                }
+            }
+
+            function rotatePiece() {
+                if (!gameRunning) return;
+                
+                const originalShape = currentPiece.shape;
+                // Matris döndürme
+                const rows = currentPiece.shape.length;
+                const cols = currentPiece.shape[0].length;
+                const newShape = Array.from({length: cols}, () => Array(rows).fill(0));
+                
+                for (let y = 0; y < rows; y++) {
+                    for (let x = 0; x < cols; x++) {
+                        newShape[x][rows - 1 - y] = currentPiece.shape[y][x];
+                    }
+                }
+                
+                currentPiece.shape = newShape;
+                
+                // Döndürme sonrası çarpışma kontrolü
+                if (collision()) {
+                    // Çarpışma varsa eski haline dön
+                    currentPiece.shape = originalShape;
+                }
+            }
+
+            function dropPiece() {
+                if (!gameRunning) return;
+                while (!collision()) {
+                    pieceY++;
+                }
+                pieceY--;
+                lockPiece();
+            }
+
+            function update() {
+                drawBoard();
+                drawPiece();
+                movePiece(0, 1);
+            }
+
+            function startGame() {
+                if (gameRunning) return;
+                gameRunning = true;
+                board = createBoard();
+                score = 0;
+                scoreDisplay.textContent = score;
+                newPiece();
+                game = setInterval(update, 500);
+            }
+
+            function pauseGame() {
+                if (!gameRunning) return;
+                clearInterval(game);
+                gameRunning = false;
+            }
+
+            function resetGame() {
+                pauseGame();
+                board = createBoard();
+                score = 0;
+                scoreDisplay.textContent = score;
+                drawBoard();
+            }
+
+            function gameOver() {
+                clearInterval(game);
+                gameRunning = false;
+                alert(`Oyun bitti! Skorunuz: ${score}`);
+            }
+
+            // Kontroller
+            document.addEventListener('keydown', function(e) {
+                if (!gameRunning) return;
+                
+                switch (e.keyCode) {
+                    case 37: // Sol
+                        movePiece(-1, 0);
+                        break;
+                    case 38: // Yukarı (Döndür)
+                        rotatePiece();
+                        break;
+                    case 39: // Sağ
+                        movePiece(1, 0);
+                        break;
+                    case 40: // Aşağı
+                        movePiece(0, 1);
+                        break;
+                    case 32: // Boşluk (Hızlı düşür)
+                        dropPiece();
+                        break;
+                }
+            });
+
+            startBtn.addEventListener('click', startGame);
+            pauseBtn.addEventListener('click', pauseGame);
+            resetBtn.addEventListener('click', resetGame);
+        }
+    </script>
+</body>
+</html>
